@@ -28,6 +28,25 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  
+  ## 新添加的依赖
+  english_words: ^4.0.0
+
+  ## 依赖本地包
+  # pkg1:
+  #       path: ../../code/pkg1
+
+  ## 依赖git
+  # pkg1:
+  #   git:
+  #     url: git://github.com/xxx/pkg1.git
+
+  ## 依赖git，使用path指定路径
+  # package1:
+  # git:
+  #   url: git://github.com/flutter/packages.git
+  #   path: packages/package1   
+
 
 dev_dependencies:
   flutter_test:
