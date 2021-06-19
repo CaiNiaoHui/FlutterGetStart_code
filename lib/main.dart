@@ -4,6 +4,7 @@ void main() {
   runApp(MyApp());
 }
 
+/// App入口
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -22,11 +23,79 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+
+      /// 命名注册的路由
+      routes: {
+        "new_page": (context) => NewRoute(),
+        "tip_page": (context) => TipRoute(text: '我是提示xxxx'),
+        "/": (context) => MyHomePage(title: 'Flutter Demo Home Page'), //注册首页路由
+      },
+
+      /// onGenerateRoute回调签名：假设路由表没有注册，
+      /// 就会调用这个函数（商城登陆展示问题）
+      // onGenerateRoute: (RouteSettings settings) {
+      //   return MaterialPageRoute(builder: (context) {
+      //     String? routeName = settings.name;
+      //     // 如果访问的路由页需要登录，但当前未登录，则直接返回登录页路由，
+      //     // 引导用户登录；其它情况则正常打开路由。
+      //     ...
+      //   });
+      // }
+
+      /// 调用根路由选择首页， 不需要再调用MyHomePage
+      // home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
+/// 路由页面
+class NewRoute extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("New route"),
+      ),
+      body: Center(
+        child: Text("This is new route"),
+      ),
+    );
+  }
+}
+
+/// 创建传参路由
+class TipRoute extends StatelessWidget {
+  TipRoute({
+    Key? key,
+    required this.text, // 接收一个text参数
+  }) : super(key: key);
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("提示"),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(18),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              Text(text),
+              RaisedButton(
+                onPressed: () => Navigator.pop(context, "我是返回值"),
+                child: Text("返回"),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 默认主页面
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
 
@@ -45,6 +114,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
+/// 定义页面状态
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
@@ -99,6 +169,42 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
+            ),
+
+            /// 路由按钮打开新页面
+            FlatButton(
+              child: Text("open new route"),
+              textColor: Colors.blue,
+              onPressed: () {
+                /// 导航到新路由
+                // 1. 使用Navigator.push调用NewRoute
+                // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                //   return NewRoute();
+                // }));
+                /// 2. 使用Navigator.pushNamed调用路由名实现路由
+                Navigator.pushNamed(context, "new_page");
+              },
+            ),
+
+            /// 打开传参页面
+            RaisedButton(
+              onPressed: () async {
+                // 打开`TipRoute`，并等待返回结果
+                var result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return TipRoute(
+                        // 路由参数
+                        text: "我是提示xxxx",
+                      );
+                    },
+                  ),
+                );
+                //输出`TipRoute`路由返回结果
+                print("路由返回值: $result");
+              },
+              child: Text("打开提示页"),
             ),
           ],
         ),
