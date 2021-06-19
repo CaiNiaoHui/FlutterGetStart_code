@@ -1,5 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'dart:async' show Future;
+import 'package:flutter/services.dart' show rootBundle;
+
+/// 使用 rootBundle 异步加载
+Future<String> loadAsset() async {
+  return await rootBundle.loadString('assets/logo.png');
+}
+
+/// 加载图片，并且返回 widget
+Widget build(BuildContext context) {
+  return Image.asset('images/feature-1.png');
+}
 
 void main() {
   runApp(MyApp());
