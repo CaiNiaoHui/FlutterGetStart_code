@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "new_page": (context) => NewRoute(),
         "tip_page": (context) => TipRoute(text: '我是提示xxxx'),
-        "/": (context) => MyHomePage(title: 'Flutter Demo Home Page'), //注册首页路由
+        // "/": (context) => MyHomePage(title: 'Flutter Demo Home Page'), //注册首页路由
       },
 
       /// onGenerateRoute回调签名：假设路由表没有注册，
@@ -57,6 +58,33 @@ class MyApp extends StatelessWidget {
 
       /// 调用根路由选择首页， 不需要再调用MyHomePage
       // home: MyHomePage(title: 'Flutter Demo Home Page'),
+
+      /// 转储Widgets树的状态
+      home: new AppHome(),
+    );
+  }
+}
+
+/// 使用树显示
+class AppHome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Material(
+      child: new Center(
+        child: new FlatButton(
+          onPressed: () {
+            /// 扁平化的树显示
+            // debugDumpApp();
+
+            /// 渲染树
+            // debugDumpRenderTree();
+
+            /// layer树
+            // debugDumpLayerTree();
+          },
+          child: new Text('Dump App'),
+        ),
+      ),
     );
   }
 }
